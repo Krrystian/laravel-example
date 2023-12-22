@@ -21,6 +21,7 @@
 <body class="bg-beige">
     <nav class="bg-oldrose h-[50px] shadow-xl shadow-blue-200">
         <div class="flex justify-between items-center lg:px-6 px-3 h-full">
+            <!-- Logo -->
             <a class="text-2xl font-bold text-black" href="{{ url('/') }}">
                 Cooking Book
             </a>
@@ -36,15 +37,52 @@
                     class="hover:bg-vanilla h-full px-4 flex items-center duration-300 transiiton-all">
                     Register</a>
                 @endif
+                @else <!-- If the user is logged in -->
+                <div class="relative flex">
+                    <h1 class="h-full flex items-center cursor-default pr-12">Welcome, <span class="px-3 font-bold">{{
+                            Auth::user()->name
+                            }}</span></h1>
+                    <div id="menuToggle" class="absolute right-0 cursor-pointer h-full flex items-center">
+                        <x-coolicon-hamburger-md id="hamburger" class=" w-[40px] " />
+                        <x-grommet-close id="close-hamburger" class="-translate-x-1 w-[30px] hidden " />
+                    </div>
+                </div>
                 @endguest
             </div>
         </div>
+        <!-- Dropdown -->
+        <div id="dropdown"
+            class="fixed flex gap-4 h-full bg-buff md:w-[300px] p-4 top-[50px] right-0 duration-500 transition-all translate-x-[300px] ">
+            @if (Route::has('logout'))
+            <div class="w-full h-full">
+                <a href=" {{ route('logout') }}"
+                    class="hover:bg-vanilla hover:rounded-xl h-[100px] px-4 flex items-center duration-300 justify-center transiiton-all text-2xl tracking-wider font-bold  border-b-2 border-b-vanilla "
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+            @endif
+
         </div>
     </nav>
-
     <main class="py-4">
         @yield('content')
     </main>
 </body>
+<script>
+    document.getElementById('menuToggle').addEventListener('click', function () {
+        const hamburgerIcon = document.getElementById('hamburger');
+        const closeIcon = document.getElementById('close-hamburger');
+        const dropdown = document.getElementById('dropdown');
+
+        hamburgerIcon.classList.toggle('hidden'); //hamburger icon
+        dropdown.classList.toggle('translate-x-0'); //dropdown animation
+        dropdown.classList.toggle('translate-x-[300px]'); //dropdown animation
+        closeIcon.classList.toggle('hidden'); //close icon
+    });
+</script>
 
 </html>
