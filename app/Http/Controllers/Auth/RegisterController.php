@@ -49,10 +49,12 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        // Validator::make() sprawdza czy dane są poprawne
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // confirmed sprawdza czy hasło i jego potwierdzenie są takie same z pola password_confirmation
         ]);
     }
 

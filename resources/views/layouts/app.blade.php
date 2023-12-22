@@ -19,7 +19,7 @@
 </head>
 
 <body class="bg-beige">
-    <nav class="bg-oldrose h-[50px] shadow-xl shadow-blue-200">
+    <nav class="fixed z-10 w-full bg-oldrose h-[50px] shadow-xl shadow-blue-200">
         <div class="flex justify-between items-center lg:px-6 px-3 h-full">
             <!-- Logo -->
             <a class="text-2xl font-bold text-black" href="{{ url('/') }}">
@@ -68,12 +68,12 @@
 
         </div>
     </nav>
-    <main class="py-4">
+    <main>
         @yield('content')
     </main>
 </body>
 <script>
-    document.getElementById('menuToggle').addEventListener('click', function () {
+    const dropdown = () => {
         const hamburgerIcon = document.getElementById('hamburger');
         const closeIcon = document.getElementById('close-hamburger');
         const dropdown = document.getElementById('dropdown');
@@ -82,7 +82,13 @@
         dropdown.classList.toggle('translate-x-0'); //dropdown animation
         dropdown.classList.toggle('translate-x-[300px]'); //dropdown animation
         closeIcon.classList.toggle('hidden'); //close icon
-    });
+    }
+    let element;
+    if (element = document.getElementById('menuToggle')) {
+        element.addEventListener('click', function () {
+            dropdown(); //test if it works
+        });
+    }
 </script>
 
 </html>
