@@ -15,7 +15,7 @@
                     autofocus>
                 <!-- dyrektywa error sprawdza czy wystapil blad i jesli tak to wyswietla komunikat-->
                 @error('email')
-                <span class="absolute top-full left-0  text-vanilla text-base" role="alert">
+                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
@@ -25,7 +25,7 @@
                 <input id="password" type="password" class="w-full rounded-xl p-2 @error('password')
                  border-vanilla @enderror" name="password" required autocomplete="current-password">
                 @error('password')
-                <span class="absolute top-full left-0  text-vanilla text-base" role="alert">
+                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror

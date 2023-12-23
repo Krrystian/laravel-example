@@ -39,7 +39,8 @@
                 @endif
                 @else <!-- If the user is logged in -->
                 <div class="relative flex">
-                    <h1 class="h-full flex items-center cursor-default pr-12">Welcome, <span class="px-3 font-bold">{{
+                    <h1 class="h-full md:flex items-center cursor-default pr-12 hidden">Welcome, <span
+                            class="px-3 font-bold">{{
                             Auth::user()->name
                             }}</span></h1>
                     <div id="menuToggle" class="absolute right-0 cursor-pointer h-full flex items-center">
@@ -52,7 +53,7 @@
         </div>
         <!-- Dropdown -->
         <div id="dropdown"
-            class="fixed flex gap-4 h-full bg-buff md:w-[300px] p-4 top-[50px] right-0 duration-500 transition-all translate-x-[300px] ">
+            class="fixed flex gap-4 h-full bg-buff w-[300px] p-4 top-[50px] right-0 duration-500 transition-all translate-x-[300px] ">
             @if (Route::has('logout'))
             <div class="w-full h-full">
                 <a href=" {{ route('logout') }}"

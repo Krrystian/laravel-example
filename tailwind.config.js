@@ -13,6 +13,7 @@ module.exports = {
             beige: "#EFEBCE",
             buff: "#D8A48F",
             oldrose: "#BB8588",
+            black: "#000000",
         },
     },
     plugins: [],

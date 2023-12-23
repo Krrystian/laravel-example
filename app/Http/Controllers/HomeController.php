@@ -3,19 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\CategoryController;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -23,6 +14,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $categoryController = new CategoryController();
+        $categories = $categoryController->fetchAll();
+        if ($categories instanceof \Illuminate\Http\JsonResponse) {
+            $categories = $categories->getData(true);
+        }
+
+        $categorySanitized = [];
+        foreach ($categories as $category) {
+            $categorySanitized[$category['id']] = $category['name'];
+        }
+
+        return view('start', compact('categorySanitized'));
     }
 }
