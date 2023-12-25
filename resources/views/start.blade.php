@@ -25,12 +25,6 @@
         </div>
     </div>
     <!-- Right -->
-
-
-    <!--
-    @foreach($categorySanitized as $id => $name)
-    <p>{{ $id}}: {{ $name }}</p>
-    @endforeach -->
 </div>
 
 @endsection

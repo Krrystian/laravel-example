@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('recipe', App\Http\Controllers\RecipeController::class);
+});
 
 Route::fallback(function () {
     return redirect()->route('home');

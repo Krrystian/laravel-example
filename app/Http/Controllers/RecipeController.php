@@ -20,7 +20,22 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        return view('recipes.create');
+        if (!isset($_SESSION['categories'])) {
+            $categoryController = new CategoryController();
+            $categories = $categoryController->fetchAll();
+            // Sprawdzamy czy $categories jest instancją klasy \Illuminate\Http\JsonResponse 
+            // (czyli czy został zwrócony JSON) i jeśli tak, to pobieramy dane z tego
+            if ($categories instanceof \Illuminate\Http\JsonResponse) {
+                $categories = $categories->getData(true);
+            }
+            $categorySanitized = [];
+            foreach ($categories as $category) {
+                $categorySanitized[$category['id']] = $category['name'];
+            }
+            $_SESSION['categories'] = $categorySanitized;
+        }
+        $categorySanitized = $_SESSION['categories'];
+        return view('recipes.create', compact('categorySanitized'));
     }
 
     /**
@@ -32,13 +47,9 @@ class RecipeController extends Controller
         $recipe->title = $request->input('title');
         $recipe->description = $request->input('description');
         $recipe->save();
-
         return redirect()->route('recipes.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $recipe = Recipe::find($id);

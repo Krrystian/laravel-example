@@ -16,6 +16,8 @@ class HomeController extends Controller
     {
         $categoryController = new CategoryController();
         $categories = $categoryController->fetchAll();
+        // Sprawdzamy czy $categories jest instancją klasy \Illuminate\Http\JsonResponse 
+        // (czyli czy został zwrócony JSON) i jeśli tak, to pobieramy dane z tego
         if ($categories instanceof \Illuminate\Http\JsonResponse) {
             $categories = $categories->getData(true);
         }
