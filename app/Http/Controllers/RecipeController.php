@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RecipeCategory;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
+use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
@@ -43,11 +45,35 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'instructions' => 'required',
+            'ingredients' => 'required',
+            'prep_time' => 'required|date_format:H:i',
+            'cook_time' => 'required|date_format:H:i',
+            'servings' => 'required|numeric',
+            'category' => 'required|exists:categories,id',
+        ]);
+
         $recipe = new Recipe();
-        $recipe->title = $request->input('title');
-        $recipe->description = $request->input('description');
+        $recipe->title = $validatedData['title'];
+        $recipe->instructions = $validatedData['instructions'];
+        $recipe->ingredients = $validatedData['ingredients'];
+        $recipe->prep_time = $validatedData['prep_time'];
+        $recipe->cook_time = $validatedData['cook_time'];
+        $recipe->servings = $validatedData['servings'];
+        $recipe->user_id = Auth::user()->id;
         $recipe->save();
-        return redirect()->route('recipes.index');
+
+        $recipeId = $recipe->id;
+        $categoryId = $validatedData['category'];
+
+        $category_recipe = new RecipeCategory();
+        $category_recipe->recipe_id = $recipeId;
+        $category_recipe->category_id = $categoryId;
+        $category_recipe->save();
+        return redirect()->route('home');
     }
 
     public function show(string $id)

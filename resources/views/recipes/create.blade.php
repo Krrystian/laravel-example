@@ -99,11 +99,11 @@
 
             <div class="col-span-1 mb-4 md:mb-0 flex w-full">
                 <a href="{{ route('home')}}"
-                    class="bg-vanilla text-white text-center rounded-xl px-4 py-2 w-full h-full">{{__('Back')}}</a>
+                    class="bg-vanilla text-white text-center rounded-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Back')}}</a>
             </div>
             <div class="col-span-1">
                 <button type="submit"
-                    class="bg-vanilla text-white rounded-xl px-4 py-2 w-full h-full">{{__('Create')}}</button>
+                    class="bg-vanilla text-white rounded-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Create')}}</button>
             </div>
         </form>
     </div>

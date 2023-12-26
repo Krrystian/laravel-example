@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RecipeCategory extends Model
 {
     use HasFactory;
+    protected $table = 'category_recipe'; //add custom table name
 
     protected $fillable = [
         'recipe_id',

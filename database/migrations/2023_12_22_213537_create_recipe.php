@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->string('title');
             $table->text('ingredients');
             $table->text('instructions');
-            $table->integer('prep_time');
-            $table->integer('cook_time');
+            $table->time('prep_time');
+            $table->time('cook_time');
             $table->integer('servings');
             $table->timestamps();
         });
