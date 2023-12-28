@@ -27,6 +27,15 @@ class RecipeController extends Controller
         $recipes = Recipe::whereIn('id', $recipes)->select('id', 'title', 'prep_time', 'cook_time', 'instructions')->get();
         return response()->json($recipes);
     }
+    public static function fetchByUser(int $user)
+    {
+        // Jeśli użytkownik nie jest zalogowany lub próbuje wyświetlić przepisy innego użytkownika, to przekierowujemy go na stronę główną
+        if (!is_numeric($user) || $user != Auth::user()->id) {
+            return redirect()->route('home');
+        }
+        $recipes = Recipe::where('user_id', $user)->select('id', 'title', 'prep_time', 'cook_time', 'instructions')->get();
+        return response()->json($recipes);
+    }
 
     public function create()
     {

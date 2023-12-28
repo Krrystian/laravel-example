@@ -61,7 +61,7 @@
         </ul>
     </div>
     <!-- Right -->
-    <div class="border-2 w-full md:pl-[300px] pt-[120px] md:pt-[50px] min-h-full">
+    <div class="w-full md:pl-[300px] pt-[120px] md:pt-[50px] min-h-full">
         <div class="flex flex-row p-4 md:p-8 gap-8 flex-wrap w-full justify-center">
             @foreach($recipes as $recipe)
             <div class="bg-oldrose p-4 min-w-[300px] w-[200px] rounded-xl hover:bg-vanilla hover:shadow-2xl duration-300 cursor-pointer"

@@ -19,10 +19,11 @@ use App\Http\Controllers\HomeController;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/{category}', [HomeController::class, 'filter'])->name('filter');
 Route::middleware(['auth'])->group(function () {
     Route::resource('recipe', RecipeController::class);
+    Route::get('/user', [HomeController::class, 'user'])->name('user');
 });
+Route::get('/{category}', [HomeController::class, 'filter'])->name('filter');
 
 Route::fallback(function () {
     return redirect()->route('home');

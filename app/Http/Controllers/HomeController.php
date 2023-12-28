@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RecipeController;
-use App\Models\RecipeCategory;
-use App\Models\Recipe;
-
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -18,8 +15,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-
         $categoryController = new CategoryController();
         $categories = $categoryController->fetchAll();
         // Sprawdzamy czy $categories jest instancją klasy \Illuminate\Http\JsonResponse 
@@ -68,8 +63,15 @@ class HomeController extends Controller
             $_SESSION['categories'] = $categorySanitized;
         }
         $categorySanitized = $_SESSION['categories'];
-
-
         return view('start', compact('categorySanitized', 'recipes'));
+    }
+    public function user()
+    {
+        $user = Auth::user()->getAuthIdentifier();
+        $recipes = RecipeController::fetchByUser($user);
+        if ($recipes instanceof \Illuminate\Http\JsonResponse) {
+            $recipes = $recipes->getData(true);
+        }
+        return view('user.index', compact('recipes'));
     }
 }

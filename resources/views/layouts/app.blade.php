@@ -53,9 +53,13 @@
         </div>
         <!-- Dropdown -->
         <div id="dropdown"
-            class="fixed flex gap-4 h-full bg-buff w-[300px] p-4 top-[50px] right-0 duration-500 transition-all translate-x-[300px]">
+            class="fixed flex flex-col gap-4 h-full bg-buff w-[300px] p-4 top-[50px] right-0 duration-500 transition-all translate-x-[300px]">
+            <a href=" {{ route('user') }}"
+                class="hover:bg-vanilla hover:rounded-xl h-[100px] px-4 flex items-center duration-300 justify-center transiiton-all text-2xl tracking-wider font-bold  border-b-2 border-b-vanilla ">
+                My Profile
+            </a>
             @if (Route::has('logout'))
-            <div class="w-full h-full">
+            <div class="">
                 <a href=" {{ route('logout') }}"
                     class="hover:bg-vanilla hover:rounded-xl h-[100px] px-4 flex items-center duration-300 justify-center transiiton-all text-2xl tracking-wider font-bold  border-b-2 border-b-vanilla "
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
