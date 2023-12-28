@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->time('prep_time');
             $table->time('cook_time');
             $table->integer('servings');
+            $table->boolean('public')->default(true);
             $table->timestamps();
         });
     }

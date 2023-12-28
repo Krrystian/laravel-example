@@ -17,6 +17,7 @@ class Recipe extends Model
         'prep_time',
         'cook_time',
         'servings',
+        'public',
     ];
 
     public function user()

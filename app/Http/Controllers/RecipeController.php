@@ -9,17 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
-
-    //TO FIX -> TURN INTO FETCH ALL
-    public function index()
+    public function fetchAll()
     {
         $recipes = Recipe::all();
-        return view('recipes.index', compact('recipes'));
+        return response()->json($recipes);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         if (!isset($_SESSION['categories'])) {

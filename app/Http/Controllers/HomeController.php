@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RecipeController;
 
 class HomeController extends Controller
 {
@@ -21,12 +22,18 @@ class HomeController extends Controller
         if ($categories instanceof \Illuminate\Http\JsonResponse) {
             $categories = $categories->getData(true);
         }
-
         $categorySanitized = [];
         foreach ($categories as $category) {
             $categorySanitized[$category['id']] = $category['name'];
         }
 
-        return view('start', compact('categorySanitized'));
+
+        $recipeController = new RecipeController();
+        $recipes = $recipeController->fetchAll();
+        if ($recipes instanceof \Illuminate\Http\JsonResponse) {
+            $recipes = $recipes->getData(true);
+        }
+
+        return view('start', compact('categorySanitized', 'recipes'));
     }
 }

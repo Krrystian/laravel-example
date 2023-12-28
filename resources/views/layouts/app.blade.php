@@ -53,7 +53,7 @@
         </div>
         <!-- Dropdown -->
         <div id="dropdown"
-            class="fixed flex gap-4 h-full bg-buff w-[300px] p-4 top-[50px] right-0 duration-500 transition-all translate-x-[300px] ">
+            class="fixed flex gap-4 h-full bg-buff w-[300px] p-4 top-[50px] right-0 duration-500 transition-all translate-x-[300px]">
             @if (Route::has('logout'))
             <div class="w-full h-full">
                 <a href=" {{ route('logout') }}"
@@ -87,7 +87,7 @@
     let element;
     if (element = document.getElementById('menuToggle')) {
         element.addEventListener('click', function () {
-            dropdown(); //test if it works
+            dropdown();
         });
     }
 </script>

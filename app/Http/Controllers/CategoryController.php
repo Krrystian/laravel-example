@@ -10,7 +10,6 @@ class CategoryController extends Controller
     public function fetchAll()
     {
         $categories = Category::all();
-        $_SESSION['categories'] = $categories;
         return response()->json($categories);
     }
 }
