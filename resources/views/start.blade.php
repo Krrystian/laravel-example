@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="relative w-full h-screen grid grid-flow-row grid-cols-2 justify-center items-center">
+<div class="relative w-full h-screen justify-center items-center overflow-x-hidden">
     <!-- Left -->
     @auth
-    <a class="hidden md:block absolute top-[75px] max-w-[300px] z-20 left-[150px] -translate-x-[50%] text-center bg-sage hover:bg-vanilla font-bold rounded-md py-2 px-4 duration-300 transition-all cursor-pointer"
+    <a class="hidden md:block fixed top-[75px] max-w-[300px] z-20 left-[150px] -translate-x-[50%] text-center bg-sage hover:bg-vanilla font-bold rounded-md py-2 px-4 duration-300 transition-all cursor-pointer"
         href="{{ route('recipe.create') }}">
         Create new
     </a>
@@ -20,8 +20,8 @@
                 <ul class="space-y-2">
                     @foreach($categorySanitized as $id => $name)
                     <li class="flex justify-between items-center">
-                        <a
-                            class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all">
+                        <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
+                            href="{{ route('filter', ['category' => $id]) }}">
                             {{$name}}
                         </a>
                     </li>
@@ -30,9 +30,8 @@
             </div>
         </div>
     </div>
-    <!-- ADD CATEGORIES VISABILITY -->
     <div id="filterMenu"
-        class="md:hidden fixed w-full top-[50px] min-h-[10%] grid grid-cols-2 overflow-hidden justify-center items-center p-4 gap-4">
+        class="md:hidden absolute w-full top-[50px] min-h-[10%] grid grid-cols-2 overflow-hidden justify-center items-center p-4 gap-4">
         <button class="w-full bg-buff hover:bg-vanilla font-bold py-2 px-8 rounded duration-300 transition-all"
             id="toggleFilter">
             Filter
@@ -53,8 +52,8 @@
         <ul class="space-y-2">
             @foreach($categorySanitized as $id => $name)
             <li class="flex justify-between items-center">
-                <a
-                    class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all">
+                <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
+                    href="{{ route('filter', ['category' => $id]) }}">
                     {{$name}}
                 </a>
             </li>
@@ -62,23 +61,46 @@
         </ul>
     </div>
     <!-- Right -->
-</div>
+    <div class="border-2 w-full md:pl-[300px] pt-[120px] md:pt-[50px] min-h-full">
+        <div class="flex flex-row p-4 md:p-8 gap-8 flex-wrap w-full justify-center">
+            @foreach($recipes as $recipe)
+            <div class="bg-oldrose p-4 min-w-[300px] w-[200px] rounded-xl hover:bg-vanilla hover:shadow-2xl duration-300 cursor-pointer"
+                onclick="window.location.href='{{ route('recipe.show', ['recipe' => $recipe['id']]) }}'">
+                <h1 class="text-2xl font-bold text-center pb-2">
+                    {{$recipe['title']}}
+                </h1>
+                <!--IMAGE-->
+                <img src="https://picsum.photos/200/300" alt="recipe image" class="w-full h-[200px] rounded-xl">
+                <div class="flex justify-between">
+                    <p>
+                        <span class="font-bold">Preparation:</span> {{ $recipe['prep_time']}}
+                    </p>
+                    <p class="text-right">
+                        <span class="font-bold">Cooking:</span> {{$recipe['cook_time']}}
+                    </p>
+                </div>
+                <p>
+                    {{$recipe['instructions']}}
+                </p>
+            </div>
+            @endforeach
 
-<script>
-    function toggleFilter() {
-        const filter = document.getElementById('filterDropdown');
-        const toggleFilter = document.getElementById('toggleFilter');
-        const filterMenu = document.getElementById('filterMenu');
-        filter.classList.toggle('-translate-x-[100%]');
-        toggleFilter.classList.toggle('bg-buff');
-        toggleFilter.classList.toggle('bg-vanilla');
-        filterMenu.classList.toggle('z-30');
-
-    }
-    if (element = document.getElementById('toggleFilter')) {
-        element.addEventListener('click', function () {
-            toggleFilter();
-        });
-    }
-</script>
-@endsection
+        </div>
+    </div>
+    <script>
+        function toggleFilter() {
+            const filter = document.getElementById('filterDropdown');
+            const toggleFilter = document.getElementById('toggleFilter');
+            const filterMenu = document.getElementById('filterMenu');
+            filter.classList.toggle('-translate-x-[100%]');
+            toggleFilter.classList.toggle('bg-buff');
+            toggleFilter.classList.toggle('bg-vanilla');
+            filterMenu.classList.toggle('z-30');
+        }
+        if (element = document.getElementById('toggleFilter')) {
+            element.addEventListener('click', function () {
+                toggleFilter();
+            });
+        }
+    </script>
+    @endsection

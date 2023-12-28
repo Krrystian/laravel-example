@@ -11,7 +11,20 @@ class RecipeController extends Controller
 {
     public function fetchAll()
     {
-        $recipes = Recipe::all();
+        $recipes = Recipe::select('id', 'title', 'prep_time', 'cook_time', 'instructions')->get();
+        return response()->json($recipes);
+    }
+    public function fetchByCategory(int $category)
+    {
+        if (!is_numeric($category)) {
+            return redirect()->route('home');
+        }
+        $recipes = RecipeCategory::where('category_id', $category)->get()->toArray();
+        $recipes = array_map(function ($recipe) {
+            return $recipe['recipe_id'];
+        }, $recipes);
+
+        $recipes = Recipe::whereIn('id', $recipes)->select('id', 'title', 'prep_time', 'cook_time', 'instructions')->get();
         return response()->json($recipes);
     }
 
@@ -34,7 +47,6 @@ class RecipeController extends Controller
         $categorySanitized = $_SESSION['categories'];
         return view('recipes.create', compact('categorySanitized'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -71,9 +83,21 @@ class RecipeController extends Controller
         return redirect()->route('home');
     }
 
-    public function show(string $id)
+    public function show(int $recipe)
     {
-        $recipe = Recipe::find($id);
+        if (!is_numeric($recipe)) {
+            return redirect()->route('home');
+        }
+
+        $recipe = Recipe::find($recipe)->toArray();
+        if (!$recipe) {
+            return redirect()->route('home');
+        }
+        //category rozszerzamy o nazwę kategorii
+        $recipe['category'] = RecipeCategory::where('recipe_id', $recipe['id'])->first()->category()->first()->toArray();
+        //e to skrót od htmlspecialchars
+        $recipe['ingredients'] = nl2br(e($recipe['ingredients']));
+        $recipe['instructions'] = nl2br(e($recipe['instructions']));
         return view('recipes.show', compact('recipe'));
     }
 

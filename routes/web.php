@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\HomeController;
+
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/{category}', [HomeController::class, 'filter'])->name('filter');
 Route::middleware(['auth'])->group(function () {
-    Route::resource('recipe', App\Http\Controllers\RecipeController::class);
+    Route::resource('recipe', RecipeController::class);
 });
 
 Route::fallback(function () {
