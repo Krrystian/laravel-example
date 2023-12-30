@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="w-full h-screen flex items-center justify-center">
+<div class="w-full h-screen flex items-center justify-center pt-[50px]">
     <div
         class="w-full md:w-2/3 lg:w-2/3 xl:w-3/5 h-3/7 rounded-xl bg-oldrose m-4 md:m-0 p-8 md:shadow-2xl shadow-oldrose flex flex-col justify-center">
         <h2 class="w-full text-3xl font-bold tracking-wide text-center pb-4">{{__('Create Recipe')}}</h2>
-        <form method="POST" action="{{ route('recipe.store') }}" class="flex flex-col md:grid md:grid-cols-2 gap-x-8">
+        <form method="POST" enctype="multipart/form-data" action="{{ route('recipe.store') }}"
+            class="flex flex-col md:grid md:grid-cols-2 gap-x-8">
             @csrf
             <label for="title"
                 class="text-xl font-bold relative gap-6 mb-6 grid grid-cols-2 col-span-2 text-center h-full justify-center items-center md:border-b-2 border-vanilla">{{__('Title')}}
@@ -96,15 +97,24 @@
                 </span>
                 @enderror
             </label>
+            <label for="image"
+                class="text-xl font-bold relative gap-6 mb-6 grid grid-cols-2 col-span-2 text-center h-full justify-center items-center">{{__('Image')}}
+                <input id="image" type="file" class="w-full rounded-xl p-2 @error('image')
+                border-vanilla @enderror" name="image" value="{{ old('image') }}" required autocomplete="image"
+                    autofocus>
+                @error('image')
+                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                <div class="col-span-2 mb-4 md:mb-0 flex w-full gap-4">
+                    <a href="{{ route('home')}}"
+                        class="bg-vanilla text-white text-center text-xl rounded-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Back')}}</a>
+                    <button type="submit"
+                        class="bg-vanilla text-white rounded-xl text-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Create')}}</button>
 
-            <div class="col-span-1 mb-4 md:mb-0 flex w-full">
-                <a href="{{ route('home')}}"
-                    class="bg-vanilla text-white text-center rounded-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Back')}}</a>
-            </div>
-            <div class="col-span-1">
-                <button type="submit"
-                    class="bg-vanilla text-white rounded-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Create')}}</button>
-            </div>
+                </div>
+
         </form>
     </div>
 </div>

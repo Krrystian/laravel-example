@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class HomeController extends Controller
 {
@@ -26,6 +27,7 @@ class HomeController extends Controller
         foreach ($categories as $category) {
             $categorySanitized[$category['id']] = $category['name'];
         }
+        Session::put('categories', $categorySanitized);
 
         $recipeController = new RecipeController();
         $recipes = $recipeController->fetchAll();
@@ -43,12 +45,11 @@ class HomeController extends Controller
         if ($recipes instanceof \Illuminate\Http\JsonResponse) {
             $recipes = $recipes->getData(true);
         }
-
         //Get categories
         if (!is_numeric($category)) {
             return redirect()->route('home');
         }
-        if (!isset($_SESSION['categories'])) {
+        if (!Session::has('categories')) {
             $categoryController = new CategoryController();
             $categories = $categoryController->fetchAll();
             // Sprawdzamy czy $categories jest instancją klasy \Illuminate\Http\JsonResponse 
@@ -60,9 +61,9 @@ class HomeController extends Controller
             foreach ($categories as $category) {
                 $categorySanitized[$category['id']] = $category['name'];
             }
-            $_SESSION['categories'] = $categorySanitized;
+            Session::put('categories', $categorySanitized);
         }
-        $categorySanitized = $_SESSION['categories'];
+        $categorySanitized = Session::get('categories');
         return view('start', compact('categorySanitized', 'recipes'));
     }
     public function user()

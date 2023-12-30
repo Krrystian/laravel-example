@@ -6,6 +6,7 @@ use App\Models\RecipeCategory;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class RecipeController extends Controller
 {
@@ -39,7 +40,7 @@ class RecipeController extends Controller
 
     public function create()
     {
-        if (!isset($_SESSION['categories'])) {
+        if (!Session::has('categories')) {
             $categoryController = new CategoryController();
             $categories = $categoryController->fetchAll();
             // Sprawdzamy czy $categories jest instancją klasy \Illuminate\Http\JsonResponse 
@@ -51,9 +52,9 @@ class RecipeController extends Controller
             foreach ($categories as $category) {
                 $categorySanitized[$category['id']] = $category['name'];
             }
-            $_SESSION['categories'] = $categorySanitized;
+            Session::put('categories', $categorySanitized);
         }
-        $categorySanitized = $_SESSION['categories'];
+        $categorySanitized = Session::get('categories');
         return view('recipes.create', compact('categorySanitized'));
     }
     /**
@@ -64,6 +65,7 @@ class RecipeController extends Controller
 
         $validatedData = $request->validate([
             'title' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'instructions' => 'required',
             'ingredients' => 'required',
             'prep_time' => 'required|date_format:H:i',
@@ -80,6 +82,11 @@ class RecipeController extends Controller
         $recipe->cook_time = $validatedData['cook_time'];
         $recipe->servings = $validatedData['servings'];
         $recipe->user_id = Auth::user()->id;
+
+        $newImageName = time() . '-' . $validatedData['title'] . '.' . $validatedData['image']->extension();
+        $recipe->image = $newImageName;
+        $validatedData['image']->storeAs('public', $newImageName);
+
         $recipe->save();
 
         $recipeId = $recipe->id;
@@ -91,6 +98,7 @@ class RecipeController extends Controller
         $category_recipe->save();
         return redirect()->route('home');
     }
+
 
     public function show(int $recipe)
     {
@@ -113,10 +121,23 @@ class RecipeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $recipe)
     {
-        $recipe = Recipe::find($id);
-        return view('recipes.edit', compact('recipe'));
+        if (!is_numeric($recipe)) {
+            return redirect()->route('home');
+        }
+
+        $recipe = Recipe::find($recipe)->toArray();
+        if (!$recipe) {
+            return redirect()->route('home');
+        }
+        //category rozszerzamy o nazwę kategorii
+        $recipe['category'] = RecipeCategory::where('recipe_id', $recipe['id'])->first()->category()->first()->toArray();
+        //e to skrót od htmlspecialchars
+        $recipe['ingredients'] = nl2br(e($recipe['ingredients']));
+        $recipe['instructions'] = nl2br(e($recipe['instructions']));
+        $categorySanitized = Session::get('categories');
+        return view('recipes.edit', compact('recipe', 'categorySanitized'));
     }
 
     /**
