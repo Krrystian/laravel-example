@@ -12,7 +12,7 @@ class RecipeController extends Controller
 {
     public function fetchAll()
     {
-        $recipes = Recipe::select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')->get();
+        $recipes = Recipe::where('public', true)->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')->get();
         return response()->json($recipes);
     }
     public function fetchByCategory(int $category)
@@ -25,7 +25,10 @@ class RecipeController extends Controller
             return $recipe['recipe_id'];
         }, $recipes);
 
-        $recipes = Recipe::whereIn('id', $recipes)->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')->get();
+        $recipes = Recipe::whereIn('id', $recipes)
+            ->where('public', true)
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')
+            ->get();
         return response()->json($recipes);
     }
     public static function fetchByUser(int $user)
@@ -34,7 +37,10 @@ class RecipeController extends Controller
         if (!is_numeric($user) || $user != Auth::user()->id) {
             return redirect()->route('home');
         }
-        $recipes = Recipe::where('user_id', $user)->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')->get();
+        $recipes = Recipe::where('user_id', $user)
+            ->where('public', true)
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')
+            ->get();
         return response()->json($recipes);
     }
 

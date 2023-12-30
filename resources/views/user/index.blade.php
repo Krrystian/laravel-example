@@ -15,7 +15,7 @@ div class="relative w-full h-screen justify-center items-center overflow-x-hidde
     <div class="w-full">
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold w-full text-center border-b-2 pb-2 border-vanilla cursor-default">
-                Your Profile</h1>
+                My Profile</h1>
         </div>
         <div class="mt-4">
             <ul class="space-y-2">
