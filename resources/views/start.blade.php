@@ -70,7 +70,8 @@
                     {{$recipe['title']}}
                 </h1>
                 <!--IMAGE-->
-                <img src="https://picsum.photos/200/300" alt="recipe image" class="w-full h-[200px] rounded-xl">
+                <img src="{{ URL('storage/' . $recipe['image']) }}" alt="recipe image"
+                    class="w-full h-[200px] rounded-xl">
                 <div class="flex justify-between">
                     <p>
                         <span class="font-bold">Preparation:</span> {{ $recipe['prep_time']}}
@@ -80,7 +81,8 @@
                     </p>
                 </div>
                 <p>
-                    {{$recipe['instructions']}}
+                    {{ strlen($recipe['instructions']) > 100 ? substr($recipe['instructions'], 0, 100) . '...' :
+                    $recipe['instructions'] }}
                 </p>
             </div>
             @endforeach

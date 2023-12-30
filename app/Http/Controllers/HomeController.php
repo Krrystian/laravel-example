@@ -34,7 +34,6 @@ class HomeController extends Controller
         if ($recipes instanceof \Illuminate\Http\JsonResponse) {
             $recipes = $recipes->getData(true);
         }
-
         return view('start', compact('categorySanitized', 'recipes'));
     }
     public function filter(int $category)
@@ -73,6 +72,7 @@ class HomeController extends Controller
         if ($recipes instanceof \Illuminate\Http\JsonResponse) {
             $recipes = $recipes->getData(true);
         }
+
         return view('user.index', compact('recipes'));
     }
 }

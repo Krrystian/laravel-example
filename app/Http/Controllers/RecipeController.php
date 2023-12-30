@@ -12,7 +12,7 @@ class RecipeController extends Controller
 {
     public function fetchAll()
     {
-        $recipes = Recipe::select('id', 'title', 'prep_time', 'cook_time', 'instructions')->get();
+        $recipes = Recipe::select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')->get();
         return response()->json($recipes);
     }
     public function fetchByCategory(int $category)
@@ -25,7 +25,7 @@ class RecipeController extends Controller
             return $recipe['recipe_id'];
         }, $recipes);
 
-        $recipes = Recipe::whereIn('id', $recipes)->select('id', 'title', 'prep_time', 'cook_time', 'instructions')->get();
+        $recipes = Recipe::whereIn('id', $recipes)->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')->get();
         return response()->json($recipes);
     }
     public static function fetchByUser(int $user)
@@ -34,7 +34,7 @@ class RecipeController extends Controller
         if (!is_numeric($user) || $user != Auth::user()->id) {
             return redirect()->route('home');
         }
-        $recipes = Recipe::where('user_id', $user)->select('id', 'title', 'prep_time', 'cook_time', 'instructions')->get();
+        $recipes = Recipe::where('user_id', $user)->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')->get();
         return response()->json($recipes);
     }
 
@@ -62,7 +62,6 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'title' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -133,9 +132,6 @@ class RecipeController extends Controller
         }
         //category rozszerzamy o nazwę kategorii
         $recipe['category'] = RecipeCategory::where('recipe_id', $recipe['id'])->first()->category()->first()->toArray();
-        //e to skrót od htmlspecialchars
-        $recipe['ingredients'] = nl2br(e($recipe['ingredients']));
-        $recipe['instructions'] = nl2br(e($recipe['instructions']));
         $categorySanitized = Session::get('categories');
         return view('recipes.edit', compact('recipe', 'categorySanitized'));
     }
@@ -145,22 +141,51 @@ class RecipeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $recipe = Recipe::find($id);
-        $recipe->title = $request->input('title');
-        $recipe->description = $request->input('description');
-        $recipe->save();
-
-        return redirect()->route('recipes.index');
+        try {
+            $validatedData = $request->validate([
+                'title' => 'required',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'instructions' => 'required',
+                'ingredients' => 'required',
+                'prep_time' => 'required|date_format:H:i:s',
+                'cook_time' => 'required|date_format:H:i:s',
+                'servings' => 'required|numeric',
+                'category' => 'required|exists:categories,id',
+            ]);
+            $recipe = Recipe::find($id);
+            $recipe->title = $validatedData['title'];
+            $recipe->instructions = $validatedData['instructions'];
+            $recipe->ingredients = $validatedData['ingredients'];
+            $recipe->prep_time = $validatedData['prep_time'];
+            $recipe->cook_time = $validatedData['cook_time'];
+            $recipe->servings = $validatedData['servings'];
+            if (isset($validatedData['image'])) {
+                $newImageName = time() . '-' . $validatedData['title'] . '.' . $validatedData['image']->extension();
+                $recipe->image = $newImageName;
+                $validatedData['image']->storeAs('public', $newImageName);
+            }
+            $recipe->save();
+            return redirect()->route('recipe.edit', ['recipe' => $recipe->id]);
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $recipe)
     {
-        $recipe = Recipe::find($id);
-        $recipe->delete();
+        $recipe = Recipe::find($recipe);
+        if (!$recipe) {
+            return redirect()->route('home');
+        }
+        if ($recipe->user_id != Auth::user()->id) {
+            return redirect()->route('home');
+        }
+        $recipe->public = false;
+        $recipe->save();
 
-        return redirect()->route('recipes.index');
+        return redirect()->route('user');
     }
 }
