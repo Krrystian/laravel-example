@@ -61,6 +61,14 @@ class RecipeController extends Controller
             ->get();
         return response()->json($recipes);
     }
+    public static function fetchByLoved()
+    {
+        $recipes = Recipe::where('public', true)
+            ->orderBy('likes', 'asc')
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
+            ->get();
+        return response()->json($recipes);
+    }
 
     public function create()
     {

@@ -59,7 +59,7 @@ class HomeController extends Controller
         $categorySanitized = Session::get('categories');
 
         //Get recipes
-        if (!is_numeric($category) && $category != 'newest' && $category != 'longest') {
+        if (!is_numeric($category) && $category != 'newest' && $category != 'longest' && $category != 'loved') {
             return redirect()->route('home');
         }
         if ($category == 'newest') {
@@ -71,6 +71,12 @@ class HomeController extends Controller
         } else if ($category == 'longest') {
             $recipeController = new RecipeController();
             $recipes = $recipeController->fetchByLongest();
+            if ($recipes instanceof \Illuminate\Http\JsonResponse) {
+                $recipes = $recipes->getData(true);
+            }
+        } else if ($category == 'loved') {
+            $recipeController = new RecipeController();
+            $recipes = $recipeController->fetchByLoved();
             if ($recipes instanceof \Illuminate\Http\JsonResponse) {
                 $recipes = $recipes->getData(true);
             }

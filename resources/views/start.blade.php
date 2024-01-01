@@ -40,11 +40,16 @@
                             The newest recipes
                         </a>
                     </li>
-
                     <li class="flex justify-between items-center">
                         <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
                             href="{{ route('filter', ['category' => 'longest']) }}">
                             The longest preparation time
+                        </a>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
+                            href="{{ route('filter', ['category' => 'loved']) }}">
+                            The most loved ones
                         </a>
                     </li>
                 </ul>
@@ -92,11 +97,16 @@
                         The newest recipes
                     </a>
                 </li>
-
                 <li class="flex justify-between items-center">
                     <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
                         href="{{ route('filter', ['category' => 'longest']) }}">
                         The longest preparation time
+                    </a>
+                </li>
+                <li class="flex justify-between items-center">
+                    <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
+                        href="{{ route('filter', ['category' => 'loved']) }}">
+                        The most loved ones
                     </a>
                 </li>
             </ul>
@@ -129,7 +139,7 @@
                 <div class="w-full flex flex-row gap-1">
                     @auth
                     @if(!in_array(Auth::user()->id, $recipe['likes']))
-                    <form method="POST" action="{{ route('recipe.like', ['recipe' => $recipe['id']]) }}">
+                    <form method="POST" action="{{ route('recipe.like', ['recipe' => $recipe['id']]) }}" class="flex">
                         @method('PUT')
                         @csrf
                         <button type="submit" class="h-5 w-5 text-black self-center">
@@ -137,7 +147,7 @@
                         </button>
                     </form>
                     @else
-                    <form method="POST" action="{{ route('recipe.like', ['recipe' => $recipe['id']]) }}">
+                    <form method="POST" action="{{ route('recipe.like', ['recipe' => $recipe['id']]) }}" class="flex">
                         @method('PUT')
                         @csrf
                         <button type="submit" class="h-5 w-5 text-black self-center">
@@ -145,8 +155,9 @@
                         </button>
                     </form>
                     @endif
+                    @else
+                    <x-heroicon-o-heart class="h-5 w-5 text-black self-center" />
                     @endauth
-                    @guest <x-heroicon-o-heart class="h-5 w-5 text-black self-center" /> @endguest
                     <p>
                         {{count($recipe['likes'])}}
                     </p>
