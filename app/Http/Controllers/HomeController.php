@@ -36,18 +36,9 @@ class HomeController extends Controller
         }
         return view('start', compact('categorySanitized', 'recipes'));
     }
-    public function filter(int $category)
+    public function filter(string $category)
     {
-        //Get recipes
-        $recipeController = new RecipeController();
-        $recipes = $recipeController->fetchByCategory($category);
-        if ($recipes instanceof \Illuminate\Http\JsonResponse) {
-            $recipes = $recipes->getData(true);
-        }
         //Get categories
-        if (!is_numeric($category)) {
-            return redirect()->route('home');
-        }
         if (!Session::has('categories')) {
             $categoryController = new CategoryController();
             $categories = $categoryController->fetchAll();
@@ -63,6 +54,31 @@ class HomeController extends Controller
             Session::put('categories', $categorySanitized);
         }
         $categorySanitized = Session::get('categories');
+
+        //Get recipes
+        if (!is_numeric($category) && $category != 'newest' && $category != 'longest') {
+            return redirect()->route('home');
+        }
+        if ($category == 'newest') {
+            $recipeController = new RecipeController();
+            $recipes = $recipeController->fetchByNewest();
+            if ($recipes instanceof \Illuminate\Http\JsonResponse) {
+                $recipes = $recipes->getData(true);
+            }
+        } else if ($category == 'longest') {
+            $recipeController = new RecipeController();
+            $recipes = $recipeController->fetchByLongest();
+            if ($recipes instanceof \Illuminate\Http\JsonResponse) {
+                $recipes = $recipes->getData(true);
+            }
+        } else {
+            $recipeController = new RecipeController();
+            $recipes = $recipeController->fetchByCategory($category);
+            if ($recipes instanceof \Illuminate\Http\JsonResponse) {
+                $recipes = $recipes->getData(true);
+            }
+        }
+
         return view('start', compact('categorySanitized', 'recipes'));
     }
     public function user()

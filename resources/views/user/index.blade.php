@@ -54,7 +54,7 @@ div class="relative w-full h-screen justify-center items-center overflow-x-hidde
         <li><span class="font-bold">Email: </span>{{Auth::user()->email}}</li>
         <li><span class="font-bold">Username: </span>{{Auth::user()->name}}</li>
         <li><span class="font-bold">Created account:</span> {{
-            \Carbon\Carbon::parse(Auth::user()->created_at)->diffForHumans() }}</li>
+            \Carbon\Carbon::parse(Auth::user()->created_at)->diffForHumans() }}</li`>
     </ul>
 </div>
 <!-- Right -->

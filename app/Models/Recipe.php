@@ -13,6 +13,7 @@ class Recipe extends Model
         'user_id',
         'title',
         'image',
+        'likes',
         'ingredients',
         'instructions',
         'prep_time',

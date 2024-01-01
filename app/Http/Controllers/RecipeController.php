@@ -43,6 +43,25 @@ class RecipeController extends Controller
             ->get();
         return response()->json($recipes);
     }
+    public static function fetchByNewest()
+    {
+        $recipes = Recipe::where('public', true)
+            ->orderBy('created_at', 'desc')
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')
+            ->get();
+
+        return response()->json($recipes);
+    }
+
+    public static function fetchByLongest()
+    {
+        $recipes = Recipe::where('public', true)
+            ->orderBy('prep_time', 'desc')
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')
+            ->get();
+        return response()->json($recipes);
+    }
+
 
     public function create()
     {

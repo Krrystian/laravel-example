@@ -28,6 +28,27 @@
                     @endforeach
                 </ul>
             </div>
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold w-full text-center border-b-2 pb-2 pt-8 border-vanilla cursor-default">
+                    Filter by</h1>
+            </div>
+            <div class="mt-4">
+                <ul class="space-y-2">
+                    <li class="flex justify-between items-center">
+                        <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
+                            href="{{ route('filter', ['category' => 'newest']) }}">
+                            The newest recipes
+                        </a>
+                    </li>
+
+                    <li class="flex justify-between items-center">
+                        <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
+                            href="{{ route('filter', ['category' => 'longest']) }}">
+                            The longest preparation time
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div id="filterMenu"
@@ -59,6 +80,27 @@
             </li>
             @endforeach
         </ul>
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold w-full text-center border-b-2 pb-2 pt-8 border-vanilla cursor-default">
+                Filter by</h1>
+        </div>
+        <div class="mt-4">
+            <ul class="space-y-2">
+                <li class="flex justify-between items-center">
+                    <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
+                        href="{{ route('filter', ['category' => 'newest']) }}">
+                        The newest recipes
+                    </a>
+                </li>
+
+                <li class="flex justify-between items-center">
+                    <a class="text-xl text-black cursor-pointer text-center w-full hover:bg-vanilla rounded-xl duration-300 p-1 transition-all"
+                        href="{{ route('filter', ['category' => 'longest']) }}">
+                        The longest preparation time
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
     <!-- Right -->
     <div class="w-full md:pl-[300px] pt-[120px] md:pt-[50px] min-h-full">
