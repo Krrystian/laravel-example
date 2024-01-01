@@ -12,7 +12,7 @@ class RecipeController extends Controller
 {
     public function fetchAll()
     {
-        $recipes = Recipe::where('public', true)->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')->get();
+        $recipes = Recipe::where('public', true)->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')->get();
         return response()->json($recipes);
     }
     public function fetchByCategory(int $category)
@@ -27,7 +27,7 @@ class RecipeController extends Controller
 
         $recipes = Recipe::whereIn('id', $recipes)
             ->where('public', true)
-            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
             ->get();
         return response()->json($recipes);
     }
@@ -39,7 +39,7 @@ class RecipeController extends Controller
         }
         $recipes = Recipe::where('user_id', $user)
             ->where('public', true)
-            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
             ->get();
         return response()->json($recipes);
     }
@@ -47,7 +47,7 @@ class RecipeController extends Controller
     {
         $recipes = Recipe::where('public', true)
             ->orderBy('created_at', 'desc')
-            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
             ->get();
 
         return response()->json($recipes);
@@ -57,11 +57,10 @@ class RecipeController extends Controller
     {
         $recipes = Recipe::where('public', true)
             ->orderBy('prep_time', 'desc')
-            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image')
+            ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
             ->get();
         return response()->json($recipes);
     }
-
 
     public function create()
     {
@@ -194,6 +193,22 @@ class RecipeController extends Controller
         } catch (\Exception $e) {
             dd($e);
         }
+    }
+    public function like(string $recipe)
+    {
+        $recipe = Recipe::find($recipe);
+        if (!$recipe) {
+            return redirect()->route('home');
+        }
+        $likes = json_decode($recipe->likes, true);
+        if (in_array(Auth::user()->id, $likes)) {
+            $likes = array_diff($likes, [Auth::user()->id]);
+        } else {
+            $likes[] = Auth::user()->id;
+        }
+        $recipe->likes = json_encode($likes);
+        $recipe->save();
+        return redirect()->route('home');
     }
 
     /**

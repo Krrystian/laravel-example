@@ -122,10 +122,35 @@
                         <span class="font-bold">Cooking:</span> {{$recipe['cook_time']}}
                     </p>
                 </div>
-                <p>
-                    {{ strlen($recipe['instructions']) > 100 ? substr($recipe['instructions'], 0, 100) . '...' :
+                <p class="h-[75px]">
+                    {{ strlen($recipe['instructions']) > 75 ? substr($recipe['instructions'], 0, 75) . '...' :
                     $recipe['instructions'] }}
                 </p>
+                <div class="w-full flex flex-row gap-1">
+                    @auth
+                    @if(!in_array(Auth::user()->id, $recipe['likes']))
+                    <form method="POST" action="{{ route('recipe.like', ['recipe' => $recipe['id']]) }}">
+                        @method('PUT')
+                        @csrf
+                        <button type="submit" class="h-5 w-5 text-black self-center">
+                            <x-heroicon-o-heart />
+                        </button>
+                    </form>
+                    @else
+                    <form method="POST" action="{{ route('recipe.like', ['recipe' => $recipe['id']]) }}">
+                        @method('PUT')
+                        @csrf
+                        <button type="submit" class="h-5 w-5 text-black self-center">
+                            <x-heroicon-s-heart />
+                        </button>
+                    </form>
+                    @endif
+                    @endauth
+                    @guest <x-heroicon-o-heart class="h-5 w-5 text-black self-center" /> @endguest
+                    <p>
+                        {{count($recipe['likes'])}}
+                    </p>
+                </div>
             </div>
             @endforeach
 

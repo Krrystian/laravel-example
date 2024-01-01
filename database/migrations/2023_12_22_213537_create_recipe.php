@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('image');
-            $table->integer('likes')->default(0);
+            $table->json('likes')->nullable()->default('[]');
             $table->text('ingredients');
             $table->text('instructions');
             $table->time('prep_time');

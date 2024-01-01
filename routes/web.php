@@ -22,6 +22,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::resource('recipe', RecipeController::class);
     Route::get('/user', [HomeController::class, 'user'])->name('user');
+    Route::put('recipe/{recipe}/like', [RecipeController::class, 'like'])->name('recipe.like');
 });
 Route::get('/{category}', [HomeController::class, 'filter'])->name('filter');
 

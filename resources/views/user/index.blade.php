@@ -77,7 +77,7 @@ div class="relative w-full h-screen justify-center items-center overflow-x-hidde
                 </p>
             </div>
             <p>
-                {{ strlen($recipe['instructions']) > 100 ? substr($recipe['instructions'], 0, 100) . '...' :
+                {{ strlen($recipe['instructions']) > 75 ? substr($recipe['instructions'], 0, 75) . '...' :
                 $recipe['instructions'] }}
             </p>
         </div>

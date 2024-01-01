@@ -34,6 +34,9 @@ class HomeController extends Controller
         if ($recipes instanceof \Illuminate\Http\JsonResponse) {
             $recipes = $recipes->getData(true);
         }
+        foreach ($recipes as &$recipe) {
+            $recipe['likes'] = json_decode($recipe['likes'], true);
+        }
         return view('start', compact('categorySanitized', 'recipes'));
     }
     public function filter(string $category)
@@ -78,7 +81,9 @@ class HomeController extends Controller
                 $recipes = $recipes->getData(true);
             }
         }
-
+        foreach ($recipes as &$recipe) {
+            $recipe['likes'] = json_decode($recipe['likes'], true);
+        }
         return view('start', compact('categorySanitized', 'recipes'));
     }
     public function user()
@@ -88,7 +93,9 @@ class HomeController extends Controller
         if ($recipes instanceof \Illuminate\Http\JsonResponse) {
             $recipes = $recipes->getData(true);
         }
-
+        foreach ($recipes as &$recipe) {
+            $recipe['likes'] = json_decode($recipe['likes'], true);
+        }
         return view('user.index', compact('recipes'));
     }
 }
