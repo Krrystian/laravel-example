@@ -12,7 +12,7 @@
         <p>Created at {{ substr($recipe['created_at'], 0, 10) }} </p>
     </div>
     <!-- Right side -->
-    <div class="h-full w-full">
+    <div class="h-full w-full xl:pr-24 md:pr-8 mt-8 md:mt-0">
         <div class="grid grid-cols-2 gap-4 mb-8 px-8">
             <p class="text-xl font-bold text-center">Preparation: <span
                     class="font-normal">{{$recipe['prep_time']}}</span></p>
@@ -25,10 +25,9 @@
         </div>
 
         <p class="text-3xl text-center md:text-start font-bold col-span-2 pb-4">Ingredients: </p>
-        <p class="text-xl font-normal pb-4 text-left px-8 md:px-0">{{$recipe['ingredients']}}</p>
-
-        <p class="text-3xl text-center md:text-start font-bold col-span-2 pb-4">Instructions: </p>
-        <p class="text-xl font-normal pb-4 px-8 md:px-0">{{ $recipe['instructions'] }}</p>
+        <p class="text-xl font-normal pb-4 text-left px-8 md:pl-0"">{!!$recipe['ingredients']!!}</p>
+        <p class=" text-3xl text-center md:text-start font-bold col-span-2 pb-4">Instructions: </p>
+        <p class="text-xl font-normal pb-4 px-8 md:pl-0">{!! $recipe['instructions'] !!}</p>
 
     </div>
 </div>
