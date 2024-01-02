@@ -13,11 +13,6 @@
                 <input id="title" type="text" class="w-full rounded-xl p-2 @error('title')
                  border-vanilla @enderror" name="title" value="{{ old('title') }}" required autocomplete="title"
                     autofocus>
-                @error('title')
-                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
             </label>
 
             <label for="prep_time"
@@ -26,11 +21,6 @@
                 <input id="prep_time" type="time" class="rounded-xl p-2 @error('prep_time')
                  border-vanilla @enderror" name="prep_time" value="{{ old('prep_time') }}" required
                     autocomplete="prep_time" autofocus>
-                @error('prep_time')
-                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
             </label>
 
             <label for="cook_time"
@@ -39,11 +29,6 @@
                 <input id="cook_time" type="time" class="rounded-xl p-2 @error('cook_time')
                  border-vanilla @enderror" name="cook_time" value="{{ old('cook_time') }}" required
                     autocomplete="cook_time" autofocus>
-                @error('cook_time')
-                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
             </label>
 
             <label for="servings"
@@ -51,11 +36,6 @@
                 <input id="servings" type="number" min="1" max="30" step="1" class="rounded-xl p-2 @error('servings')
                  border-vanilla @enderror" name="servings" value="{{ old('servings') }}" required
                     autocomplete="servings" autofocus>
-                @error('servings')
-                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
             </label>
 
             <label for="category"
@@ -67,11 +47,6 @@
                     <option value="{{ $id }}">{{ $name }}</option>
                     @endforeach
                 </select>
-                @error('category')
-                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
             </label>
 
             <label for="ingredients"
@@ -79,11 +54,6 @@
                 <textarea id="ingredients" class="w-full rounded-xl p-2 @error('ingredients')
                 border-vanilla @enderror" name="ingredients" required
                     style="max-height: 6em; resize: vertical;">{{ old('ingredients') }}</textarea>
-                @error('ingredients')
-                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
             </label>
 
             <label for="instructions"
@@ -91,30 +61,25 @@
                 <textarea id="instructions" class="w-full rounded-xl p-2 @error('instructions')
                 border-vanilla @enderror" name="instructions" required
                     style="max-height: 6em; resize: vertical;">{{ old('instructions') }}</textarea>
-                @error('instructions')
-                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
             </label>
             <label for="image"
                 class="text-xl font-bold relative gap-6 mb-6 grid grid-cols-2 col-span-2 text-center h-full justify-center items-center">{{__('Image')}}
                 <input id="image" type="file" class="w-full rounded-xl p-2 @error('image')
                 border-vanilla @enderror" name="image" value="{{ old('image') }}" required autocomplete="image"
                     autofocus>
-                @error('image')
-                <span class="absolute top-full left-0 text-vanilla text-sm md:text-base" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-                <div class="col-span-2 mb-4 md:mb-0 flex w-full gap-4">
-                    <a href="{{ route('home')}}"
-                        class="bg-vanilla text-white text-center text-xl rounded-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Back')}}</a>
-                    <button type="submit"
-                        class="bg-vanilla text-white rounded-xl text-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Create')}}</button>
-
-                </div>
-
+            </label>
+            @if($errors->any())
+            <p class="text-vanilla text-xs md:text-base font-bold mb-2 text-center w-full col-span-2" role="alert">
+                <strong>{{ $errors->first() }}</strong>
+            </p>
+            @endif
+            <div class="col-span-2 mb-4 md:mb-0 flex w-full gap-4">
+                <a href="{{ route('home')}}"
+                    class="bg-vanilla text-white text-center text-xl rounded-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Back')}}</a>
+                <button type="submit"
+                    class="bg-vanilla text-white rounded-xl text-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Create')}}
+                </button>
+            </div>
         </form>
     </div>
 </div>

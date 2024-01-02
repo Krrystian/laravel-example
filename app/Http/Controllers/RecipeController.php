@@ -64,9 +64,10 @@ class RecipeController extends Controller
     public static function fetchByLoved()
     {
         $recipes = Recipe::where('public', true)
-            ->orderBy('likes', 'asc')
+            ->orderByRaw('JSON_LENGTH(likes) DESC') //check json length
             ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
             ->get();
+
         return response()->json($recipes);
     }
 
@@ -95,7 +96,7 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
+            'title' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'instructions' => 'required',
             'ingredients' => 'required',

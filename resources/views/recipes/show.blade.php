@@ -23,12 +23,10 @@
             <p class="text-xl font-bold text-center">Category: <span
                     class="font-normal">{{$recipe['category']['name']}}</span></p>
         </div>
-
         <p class="text-3xl text-center md:text-start font-bold col-span-2 pb-4">Ingredients: </p>
         <p class="text-xl font-normal pb-4 text-left px-8 md:pl-0"">{!!$recipe['ingredients']!!}</p>
         <p class=" text-3xl text-center md:text-start font-bold col-span-2 pb-4">Instructions: </p>
         <p class="text-xl font-normal pb-4 px-8 md:pl-0">{!! $recipe['instructions'] !!}</p>
-
     </div>
 </div>
 

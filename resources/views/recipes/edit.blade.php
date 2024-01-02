@@ -69,9 +69,11 @@
             <a href="{{ route('recipe.show', ['recipe' => $recipe['id']]) }}"
                 onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this recipe?')) { document.getElementById('delete-recipe').submit(); }"
                 class="text-3xl font-bold text-center rounded-xl p-2 bg-sage text-beige border-sage hover:bg-vanilla hover:text-black hover:border-vanilla duration-300 transition-all border-2">Delete
-                Recipe</a>
+                Recipe< /a>
         </div>
+    </div>
 </form>
+
 <form id="delete-recipe" action="{{ route('recipe.destroy', ['recipe' => $recipe['id']]) }}" method="POST">
     @method('DELETE')
     @csrf

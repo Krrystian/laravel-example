@@ -15,14 +15,21 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::resource('recipe', RecipeController::class);
-    Route::get('/user', [HomeController::class, 'user'])->name('user');
     Route::put('recipe/{recipe}/like', [RecipeController::class, 'like'])->name('recipe.like');
+
+    Route::prefix('/user')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('user');
+        Route::get('/changeUsername', [UserController::class, 'changeUsernameShow'])->name('user.changeUsername');
+        Route::put('/changeUsername', [UserController::class, 'changeUsername'])->name('user.changeUsername');
+    });
+
 });
 Route::get('/{category}', [HomeController::class, 'filter'])->name('filter');
 

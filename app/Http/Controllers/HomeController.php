@@ -92,16 +92,4 @@ class HomeController extends Controller
         }
         return view('start', compact('categorySanitized', 'recipes'));
     }
-    public function user()
-    {
-        $user = Auth::user()->getAuthIdentifier();
-        $recipes = RecipeController::fetchByUser($user);
-        if ($recipes instanceof \Illuminate\Http\JsonResponse) {
-            $recipes = $recipes->getData(true);
-        }
-        foreach ($recipes as &$recipe) {
-            $recipe['likes'] = json_decode($recipe['likes'], true);
-        }
-        return view('user.index', compact('recipes'));
-    }
 }

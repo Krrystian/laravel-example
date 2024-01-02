@@ -4,3 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.toast-message {
+    color: #000 !important;
+}
+.toast-title {
+    color: #000 !important;
+}
+.toast-success {
+    background-color: #4fbb0b !important;
+}
+.toast-error {
+    background-color: #f15151 !important;
+}
