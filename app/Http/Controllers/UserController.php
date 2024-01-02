@@ -46,10 +46,9 @@ class UserController extends Controller
             'Username changed',
             [
                 'positionClass' => 'toast-bottom-right',
-                'progressBar' => true,
+                'progressBar' => false,
                 'timeOut' => 2000,
                 'closeButton' => true,
-                'background' => '#60A5FA',
             ]
         );
         return redirect()->route('user');
