@@ -73,9 +73,22 @@ class RecipeController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'title' => 'required',
+                'title' => 'string|nullable',
             ]);
 
+            if (strlen($request->title) == 0) {
+                toastr()->success(
+                    'Recipes found successfully',
+                    'Recipes found',
+                    [
+                        'positionClass' => 'toast-bottom-right',
+                        'progressBar' => false,
+                        'timeOut' => 2000,
+                        'closeButton' => true,
+                    ]
+                );
+                return redirect()->route('home');
+            }
             $recipes = Recipe::where('public', true)
                 ->where('title', 'like', '%' . $validatedData['title'] . '%')
                 ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
@@ -101,9 +114,29 @@ class RecipeController extends Controller
             foreach ($recipes as &$recipe) {
                 $recipe['likes'] = json_decode($recipe['likes'], true);
             }
+            toastr()->success(
+                'Recipes found successfully',
+                'Recipes found',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
             return view('start', compact('categorySanitized', 'recipes'));
         } catch (\Exception $e) {
-            dd($e);
+            toastr()->error(
+                'Something went wrong, please try again',
+                'Unable to search for recipes',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect()->back();
         }
     }
     public static function fetchById(string $recipe_id)

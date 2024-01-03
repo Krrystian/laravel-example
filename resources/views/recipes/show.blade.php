@@ -57,7 +57,7 @@
         <div class="flex gap-4 px-8">
             <p class="font-bold text-xl text-black">{{$comment['username']}}:</p>
             <p class="text-md text-black/60 italic self-center h-full">{{$comment['comment']}}</p>
-            <p class="hidden md:flex self-center">{{ substr($comment['created_at'], 0, 10) }}</p>
+            <p class="hidden md:flex self-center">{{ substr($comment['updated_at'], 0, 10) }}</p>
             @if( Auth::id() == $comment['user_id'])
             <button>
                 <a href="{{ route('comment.edit', $comment['id']) }}" class="">
