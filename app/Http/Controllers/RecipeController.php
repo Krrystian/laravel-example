@@ -52,7 +52,6 @@ class RecipeController extends Controller
 
         return response()->json($recipes);
     }
-
     public static function fetchByLongest()
     {
         $recipes = Recipe::where('public', true)
@@ -67,8 +66,44 @@ class RecipeController extends Controller
             ->orderByRaw('JSON_LENGTH(likes) DESC') //check json length
             ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
             ->get();
-
         return response()->json($recipes);
+    }
+    public static function fetchByName(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'title' => 'required',
+            ]);
+
+            $recipes = Recipe::where('public', true)
+                ->where('title', 'like', '%' . $validatedData['title'] . '%')
+                ->select('id', 'title', 'prep_time', 'cook_time', 'instructions', 'image', 'likes')
+                ->get()->toArray();
+
+            $categorySanitized = [];
+
+            if (Session::get('categories')) {
+                $categorySanitized = Session::get('categories');
+            } else {
+                $categoryController = new CategoryController();
+                $categories = $categoryController->fetchAll();
+                // Sprawdzamy czy $categories jest instancją klasy \Illuminate\Http\JsonResponse 
+                // (czyli czy został zwrócony JSON) i jeśli tak, to pobieramy dane z tego
+                if ($categories instanceof \Illuminate\Http\JsonResponse) {
+                    $categories = $categories->getData(true);
+                }
+                foreach ($categories as $category) {
+                    $categorySanitized[$category['id']] = $category['name'];
+                }
+                Session::put('categories', $categorySanitized);
+            }
+            foreach ($recipes as &$recipe) {
+                $recipe['likes'] = json_decode($recipe['likes'], true);
+            }
+            return view('start', compact('categorySanitized', 'recipes'));
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 
     public function create()
@@ -96,7 +131,7 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|numeric',
+            'title' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'instructions' => 'required',
             'ingredients' => 'required',
@@ -128,9 +163,18 @@ class RecipeController extends Controller
         $category_recipe->recipe_id = $recipeId;
         $category_recipe->category_id = $categoryId;
         $category_recipe->save();
+        toastr()->success(
+            'Recipe has been added successfully',
+            'Recipe added',
+            [
+                'positionClass' => 'toast-bottom-right',
+                'progressBar' => false,
+                'timeOut' => 2000,
+                'closeButton' => true,
+            ]
+        );
         return redirect()->route('home');
     }
-
 
     public function show(int $recipe)
     {
@@ -197,10 +241,33 @@ class RecipeController extends Controller
                 $recipe->image = $newImageName;
                 $validatedData['image']->storeAs('public', $newImageName);
             }
+            $recipeCategory = RecipeCategory::where('recipe_id', $id)->first();
+            $recipeCategory->category_id = $validatedData['category'];
+            $recipeCategory->save();
             $recipe->save();
-            return redirect()->route('recipe.edit', ['recipe' => $recipe->id]);
+            toastr()->success(
+                'Recipe has been edited successfully',
+                'Recipe edited',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect()->route('recipe.show', ['recipe' => $recipe->id]);
         } catch (\Exception $e) {
-            dd($e);
+            toastr()->error(
+                'Something went wrong, please try again',
+                'Unable to edit recipe',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect()->route('recipe.edit', ['recipe' => $id]);
         }
     }
     public function like(string $recipe)
@@ -217,6 +284,16 @@ class RecipeController extends Controller
         }
         $recipe->likes = json_encode($likes);
         $recipe->save();
+        toastr()->success(
+            'Recipe has been liked successfully',
+            'Recipe liked',
+            [
+                'positionClass' => 'toast-bottom-right',
+                'progressBar' => false,
+                'timeOut' => 2000,
+                'closeButton' => true,
+            ]
+        );
         return redirect()->route('home');
     }
 
@@ -227,14 +304,43 @@ class RecipeController extends Controller
     {
         $recipe = Recipe::find($recipe);
         if (!$recipe) {
+            toastr()->error(
+                'Recipe does not exist',
+                'Not found',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
             return redirect()->route('home');
         }
         if ($recipe->user_id != Auth::user()->id) {
+            toastr()->error(
+                'You are not allowed to delete this recipe',
+                'Not allowed',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
             return redirect()->route('home');
         }
         $recipe->public = false;
         $recipe->save();
-
+        toastr()->success(
+            'Recipe has been deleted successfully',
+            'Recipe deleted',
+            [
+                'positionClass' => 'toast-bottom-right',
+                'progressBar' => false,
+                'timeOut' => 2000,
+                'closeButton' => true,
+            ]
+        );
         return redirect()->route('user');
     }
 }

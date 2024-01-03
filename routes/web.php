@@ -31,7 +31,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
 });
+Route::get('/search', [RecipeController::class, 'fetchByName'])->name('search');
 Route::get('/{category}', [HomeController::class, 'filter'])->name('filter');
+
 
 Route::fallback(function () {
     return redirect()->route('home');

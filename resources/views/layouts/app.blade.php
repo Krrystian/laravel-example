@@ -19,7 +19,7 @@
 </head>
 
 <body class="bg-beige">
-    <nav class="fixed z-10 w-full bg-oldrose h-[50px] shadow-xl shadow-blue-200">
+    <nav class="fixed z-10 w-full bg-oldrose h-[7vh] shadow-xl ">
         <div class="flex justify-between items-center lg:px-6 px-3 h-full">
             <!-- Logo -->
             <a class="text-2xl font-bold text-black" href="{{ url('/') }}">

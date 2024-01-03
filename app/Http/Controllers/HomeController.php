@@ -90,6 +90,17 @@ class HomeController extends Controller
         foreach ($recipes as &$recipe) {
             $recipe['likes'] = json_decode($recipe['likes'], true);
         }
+        toastr()->success(
+            'Recipes filtered successfully',
+            'Filtered',
+            [
+                'positionClass' => 'toast-bottom-right',
+                'progressBar' => false,
+                'timeOut' => 2000,
+                'closeButton' => true,
+            ]
+        );
         return view('start', compact('categorySanitized', 'recipes'));
     }
+
 }
