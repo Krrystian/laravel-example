@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="pt-[50px] h-screen w-full flex flex-col md:grid grid-cols-2 items-center">
+<div class="pt-[50px] min-h-screen w-full flex flex-col md:grid grid-cols-2 items-center">
     <h1 class="text-5xl text-black/50 font-bold tracking-wider text-center col-span-2 cursor-default py-8 md:py-0">
         {{$recipe['title']}}</h1>
     <!-- Left side -->
@@ -28,6 +28,46 @@
         <p class=" text-3xl text-center md:text-start font-bold col-span-2 pb-4">Instructions: </p>
         <p class="text-xl font-normal pb-4 px-8 md:pl-0">{!! $recipe['instructions'] !!}</p>
     </div>
+</div>
+<!-- Comment Section -->
+<div class="mt-8 flex flex-col items-center">
+    <h2 class="text-3xl font-bold text-center pb-4">Comments</h2>
+    @auth
+    <!-- Add new comment form -->
+    <form action="{{ route('comment.store') }}" method="POST" class="w-full px-8 md:w-[50%] pb-10">
+        @csrf
+        @method('POST')
+        <input type="hidden" name="recipe_id" value="{{$recipe['id']}}">
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+            <label for="comment" class=" self-center text-xl text-nowrap font-bold mb-2 h-full">Add
+                comment:</label>
+            <textarea name="comment" id="comment" class="border-4 bg-beige border-sage resize-none text-xl p-2 w-full"
+                required> </textarea>
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-600 text-white text-nowrap bg-oldrose hover:bg-vanilla duration-300 transition-all text-xl font-bold py-2 px-4 rounded">
+                Add
+            </button>
+        </div>
+    </form>
+    @else
+    <p class="text-xl font-bold text-center">You must be logged in to comment</p>
+    @endauth
+    <div class="mb-24">
+        @foreach($comments as $comment)
+        <div class="flex gap-4 px-8">
+            <p class="font-bold text-xl text-black">{{$comment['username']}}:</p>
+            <p class="text-md text-black/60 italic self-center h-full">{{$comment['comment']}}</p>
+            <p class="hidden md:flex self-center">{{ substr($comment['created_at'], 0, 10) }}</p>
+            @if( Auth::id() == $comment['user_id'])
+            <button>
+                <a href="{{ route('comment.edit', $comment['id']) }}" class="">
+                    <x-feathericon-edit />
+                </a>
+                @endif
+        </div>
+        @endforeach
+    </div>
+
 </div>
 
 @endsection

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RecipeCategory;
 use Illuminate\Http\Request;
-use App\Models\Recipe;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use App\Models\Recipe;
+use App\Models\RecipeCategory;
+use App\Models\Comment;
 
 class RecipeController extends Controller
 {
@@ -105,6 +106,24 @@ class RecipeController extends Controller
             dd($e);
         }
     }
+    public static function fetchById(string $recipe_id)
+    {
+        $recipe = Recipe::find($recipe_id)->where('public', true)->get();
+        if (!$recipe) {
+            toastr()->error(
+                'Recipe does not exist',
+                'Not found',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect()->route('home');
+        }
+        return response()->json($recipe);
+    }
 
     public function create()
     {
@@ -176,7 +195,7 @@ class RecipeController extends Controller
         return redirect()->route('home');
     }
 
-    public function show(int $recipe)
+    public function show(string $recipe)
     {
         if (!is_numeric($recipe)) {
             return redirect()->route('home');
@@ -186,12 +205,18 @@ class RecipeController extends Controller
         if (!$recipe) {
             return redirect()->route('home');
         }
+        //pobieramy komentarze
+        $comments = Comment::where('recipe_id', $recipe['id'])
+            ->join('users', 'comments.user_id', '=', 'users.id')
+            ->select('comments.*', 'users.name AS username')
+            ->get()->toArray();
+
         //category rozszerzamy o nazwę kategorii
         $recipe['category'] = RecipeCategory::where('recipe_id', $recipe['id'])->first()->category()->first()->toArray();
         //e to skrót od htmlspecialchars
         $recipe['ingredients'] = nl2br(e($recipe['ingredients']));
         $recipe['instructions'] = nl2br(e($recipe['instructions']));
-        return view('recipes.show', compact('recipe'));
+        return view('recipes.show', compact('recipe', 'comments'));
     }
 
     /**

@@ -4,17 +4,19 @@
 <div class="w-full h-screen flex items-center justify-center">
     <div
         class="w-full md:w-2/3 lg:w-1/3 h-3/7 rounded-xl bg-oldrose m-4 md:m-0 p-8 md:shadow-2xl shadow-oldrose flex flex-col justify-center">
-        <h1 class="text-3xl text-center font-bold mb-4">Change Username</h1>
-        <form action="{{ route('user.changeUsername') }}" method="POST">
+        <h1 class="text-3xl text-center font-bold mb-4">Edit comment</h1>
+        <form action="{{ route('comment.update') }}" method="POST">
             @csrf
             @method('PUT')
-            <label for="username"
-                class="text-xl flex text-center text-nowrap gap-4 items-center font-bold mb-4">{{__('New
-                Username')}}
-                <input id="username" type="text" class="w-full rounded-xl font-normal p-2 
-                 border-vanilla " name="username" required autocomplete="username">
+            <input type="hidden" name="id" value="{{ $comment['id'] }}">
+            <label for="comment"
+                class="text-xl flex text-center text-nowrap gap-4 items-center font-bold mb-4">{{__('Comment')}}
+                <textarea id="comment" type="text" rows="2"
+                    class="w-full rounded-xl font-normal p-2 border-vanilla resize-none" name="comment" required
+                    autocomplete="comment">{{ $comment['comment'] }}</textarea>
+                </textarea>
             </label>
-            @error('username')
+            @error('comment')
             <p class="text-vanilla text-sm md:text-base text-center w-full" role="alert">
                 <strong>{{ $message }}</strong>
             </p>
