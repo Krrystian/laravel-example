@@ -5,13 +5,17 @@
 <div class="relative w-full h-screen justify-center items-center overflow-x-hidden">
     <!-- Left -->
     @auth
-    <a class="hidden md:block fixed top-[75px] max-w-[300px] z-20 left-[150px] -translate-x-[50%] text-center bg-sage hover:bg-vanilla font-bold rounded-md py-2 px-4 duration-300 transition-all cursor-pointer"
-        href="{{ route('recipe.create') }}">
-        Create new
-    </a>
+    <div class="w-[300px] flex justify-center p-4">
+        <a class="hidden md:flex w-full justify-center fixed top-[75px] max-w-[268px] z-20 text-center bg-sage hover:bg-vanilla font-bold rounded py-2 px-8 text-xl my-2 duration-300 transition-all"
+            href="{{ route('recipe.create') }}">
+            Create new
+        </a>
+    </div>
+
     @endauth
     <div
-        class="hidden fixed z-10 w-[300px] top-[50px] min-h-screen md:flex bg-buff overflow-hidden justify-center items-center p-4">
+        class="hidden fixed z-10 w-[300px] top-[7vh] min-h-[93vh] md:flex bg-buff overflow-hidden justify-center items-center p-4">
+
         <div class="w-full">
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl font-bold w-full text-center border-b-2 pb-2 border-vanilla cursor-default">
@@ -37,13 +41,13 @@
         </button>
         @auth
         <a class="w-full bg-buff hover:bg-vanilla font-bold py-2 px-8 rounded duration-300 text-center transition-all cursor-pointer"
-            href="{{ route('recipe.create') }}">
+            href="{{ route('recipe.create') }}" id="filterCreateNew">
             Create new
         </a>
         @endauth
     </div>
     <div id="profileDropdown"
-        class="fixed flex-col p-4 justify-center bg-buff flex pt-[50px] h-screen z-10 top-[50px] w-1/2 overflow-hidden duration-300 transition-all -translate-x-[100%]">
+        class="fixed flex-col p-4 justify-center bg-buff flex pt-[7vh] h-[93vh] z-10 top-[7vh] w-1/2 overflow-hidden duration-300 transition-all -translate-x-[100%]">
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold w-full text-center border-b-2 pb-2 border-vanilla cursor-default">
                 My Profile</h1>

@@ -20,7 +20,7 @@ class CommentController extends Controller
                 'comment' => 'required',
                 'id' => 'required',
             ]);
-            $comment = Comment::find($request->id)->first();
+            $comment = Comment::find($request->id);
             $user_id = $comment->user_id;
             if ($user_id != Auth::id()) {
                 toastr()->error(

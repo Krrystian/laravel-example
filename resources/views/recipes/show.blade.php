@@ -52,22 +52,31 @@
     @else
     <p class="text-xl font-bold text-center">You must be logged in to comment</p>
     @endauth
-    <div class="mb-24">
-        @foreach($comments as $comment)
-        <div class="flex gap-4 px-8">
-            <p class="font-bold text-xl text-black">{{$comment['username']}}:</p>
-            <p class="text-md text-black/60 italic self-center h-full">{{$comment['comment']}}</p>
-            <p class="hidden md:flex self-center">{{ substr($comment['updated_at'], 0, 10) }}</p>
-            @if( Auth::id() == $comment['user_id'])
-            <button>
-                <a href="{{ route('comment.edit', $comment['id']) }}" class="">
-                    <x-feathericon-edit />
-                </a>
+    <div class="w-full flex mb-24 justify-center">
+        <div class="flex-col flex w-full mx-8 md:w-[60%]">
+            @foreach($comments as $comment)
+            <div class="grid grid-cols-4 md:grid-cols-5 mb-4 pb-4 border-b-2 border-b-vanilla">
+                <p class="font-bold text-xl text-black flex items-center">{{$comment['username']}}:</p>
+                <p class="text-md text-black/60 italic text-wrap col-span-2 break-words self-center h-full">
+                    {{$comment['comment']}}
+                </p>
+                <p class="hidden md:flex self-center justify-center">{{ substr($comment['updated_at'], 0, 10) }}
+                </p>
+                @if( Auth::id() == $comment['user_id'])
+                <div class="flex justify-center items-center">
+                    <button>
+                        <a href="{{ route('comment.edit', $comment['id']) }}" class="">
+                            <x-feathericon-edit />
+                        </a>
+                    </button>
+                </div>
+                @else
+                <a></a>
                 @endif
+
+            </div>
+            @endforeach
         </div>
-        @endforeach
     </div>
-
 </div>
-
 @endsection

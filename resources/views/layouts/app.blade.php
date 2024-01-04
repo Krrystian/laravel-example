@@ -53,7 +53,7 @@
         </div>
         <!-- Dropdown -->
         <div id="dropdown"
-            class="fixed flex flex-col select-none gap-4 h-full bg-buff w-[300px] p-4 top-[50px] right-0 duration-500 transition-all translate-x-[300px]">
+            class="fixed flex flex-col select-none gap-4 h-full bg-buff w-[300px] p-4 top-[7vh] right-0 duration-500 transition-all translate-x-[300px]">
             @if (Route::has('user'))
             <a href=" {{ route('user') }}"
                 class="hover:bg-vanilla hover:rounded-xl h-[100px] px-4 flex items-center duration-300 justify-center transiiton-all text-2xl tracking-wider font-bold  border-b-2 border-b-vanilla ">
