@@ -21,10 +21,28 @@ Podane nizej wersje programów byly wykorzystane do tworzenia aplikacji, aplikac
 2. W folderze projektu, w terminalu `npm install` w celu instalacji zaleznosci `node_modules`.
 3. Włączyć XAMPP MySQL Database oraz Apache Web Server
 4. Migracja bazy danych: `php artisan migrate`
-5. W celu utworzenia bazy danych wybrać opcję: `Would you like to create it? Yes`. Enter. Baza danych zostanie utworzona.
-6. Po uruchomieniu serwera, w terminalu `npm run dev`
-7. W nowym oknie terminala: `php artisan serve`
-8. Strona dostępna jest pod adresem: `localhost:8000`
+5. Wczytywanie przykładowych danych: `php artisan db:seed`
+6. W celu utworzenia bazy danych wybrać opcję: `Would you like to create it? Yes`. Enter. Baza danych zostanie utworzona.
+7. Po uruchomieniu serwera, w terminalu `npm run dev`
+8. W nowym oknie terminala: `php artisan serve`
+9. Strona dostępna jest pod adresem: `localhost:8000`
+
+## Baza danych (przykładowe dane)
+
+Utworzona baza danych zawiera odpowiadajace konta:
+
+-   **Admin**
+    -   Login: admin@admin.com
+    -   Hasło: Administrator
+-   **Test**
+    -   Login: test@test.com
+    -   Hasło: KontoTest11
+-   **Wojciech Ross**
+    -   Login: wojciech.ross@wr.com
+    -   Hasło: WojRoss123
+-   **Agnieszka Niemieszka**
+    -   Login: agnieszka.niemieszka@an.com
+    -   Hasło: AgnieszkaNiemieszka123
 
 ## Dodatkowe informacje
 
