@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\RecipeController;
 use Session;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -28,6 +29,38 @@ class UserController extends Controller
             return redirect()->route('login');
 
         return view('user.changeUsername');
+    }
+
+    static public function fetchUser(string $email)
+    {
+        if (!(Auth::check() && Auth::user()->privilege == true)) {
+            toastr()->error(
+                'You do not have permission to do that action',
+                'Permission denied',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect('home');
+        }
+        $user = User::where('email', 'LIKE', '%' . $email . '%')->select('id', 'name', 'email')->first()->toArray();
+        if (!$user) {
+            toastr()->error(
+                'User does not exist',
+                'User not found',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect('admin');
+        }
+        return response()->json([$user]);
     }
     public function changeUsername(Request $request)
     {
@@ -52,5 +85,55 @@ class UserController extends Controller
             ]
         );
         return redirect()->route('user');
+    }
+    public function suspendUser(Request $request)
+    {
+        if (!Auth::check())
+            return redirect()->route('login');
+        if (!Auth::user()->privilege) {
+            toastr()->error(
+                'You do not have permission to do that action',
+                'Permission denied',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect('home');
+        }
+        try {
+            $request->validate([
+                'id' => 'required|integer|exists:users,id',
+            ]);
+        } catch (\Exception $e) {
+            toastr()->error(
+                'Something went wrong',
+                'User not found',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect('admin');
+        }
+        $user = User::find($request->id);
+        $user->suspended = true;
+        $user->save();
+
+        toastr()->success(
+            'Username has been changed successfully',
+            'Username changed',
+            [
+                'positionClass' => 'toast-bottom-right',
+                'progressBar' => false,
+                'timeOut' => 2000,
+                'closeButton' => true,
+            ]
+        );
+        return redirect()->route('admin');
     }
 }

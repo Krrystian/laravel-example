@@ -201,4 +201,5 @@
             });
         }
     </script>
-    @endsection
+</div>
+@endsection

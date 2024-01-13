@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,12 +32,20 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update', [CommentController::class, 'update'])->name('comment.update');
         Route::post('/store', [CommentController::class, 'store'])->name('comment.store');
     });
-
+    Route::prefix('/category')->group(function () {
+        Route::post('/add', [CategoryController::class, 'store'])->name('category.store');
+        Route::delete('/delete', [CategoryController::class, 'destroy'])->name('category.destroy');
+        Route::get('/edit/{category_id}', [CategoryController::class, 'edit'])->name('category.edit');
+        Route::put('/update', [CategoryController::class, 'update'])->name('category.update');
+    });
     Route::prefix('/user')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('user');
         Route::get('/changeUsername', [UserController::class, 'changeUsernameShow'])->name('user.changeUsername');
         Route::put('/changeUsername', [UserController::class, 'changeUsername'])->name('user.changeUsername');
+        Route::put('/suspend', [UserController::class, 'suspendUser'])->name('user.suspend');
     });
+    Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
+    Route::get('/admin/userSelect', [AdminDashboardController::class, 'userSelect'])->name('admin.userSelect');
 });
 Route::get('/search', [RecipeController::class, 'fetchByName'])->name('search');
 Route::get('/{category}', [HomeController::class, 'filter'])->name('filter');

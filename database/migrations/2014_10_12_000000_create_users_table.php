@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('password');
             $table->rememberToken();
             $table->boolean("privilege")->default(false);
+            $table->boolean("suspended")->default(false);
             $table->timestamps();
         });
     }
