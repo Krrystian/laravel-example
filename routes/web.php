@@ -31,6 +31,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{comment_id}', [CommentController::class, 'edit'])->name('comment.edit');
         Route::put('/update', [CommentController::class, 'update'])->name('comment.update');
         Route::post('/store', [CommentController::class, 'store'])->name('comment.store');
+        Route::delete('/delete', [CommentController::class, 'destroy'])->name('comment.destroy');
+        Route::put('/verify', [CommentController::class, 'verify'])->name('comment.verify');
+        Route::put('/report', [CommentController::class, 'report'])->name('comment.report');
     });
     Route::prefix('/category')->group(function () {
         Route::post('/add', [CategoryController::class, 'store'])->name('category.store');

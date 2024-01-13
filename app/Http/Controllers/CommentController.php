@@ -113,4 +113,180 @@ class CommentController extends Controller
             return redirect()->back();
         }
     }
+    public static function fetchReportedComments()
+    {
+        $comments = Comment::where('visible', true)
+            ->where('reported', true)
+            ->with(['user:id,email,suspended', 'recipe:id,title'])
+            ->get()
+            ->toArray();
+        return response()->json($comments);
+    }
+    public function destroy(Request $request)
+    {
+        try {
+            request()->validate([
+                'id' => 'required',
+                'user_id' => 'required',
+            ]);
+        } catch (\Exception $e) {
+            toastr()->error(
+                'Something went wrong',
+                'Error',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect()->back();
+        }
+        if (!Auth::user()->privilege) {
+            if (Auth::user()->getAuthIdentifier() != $request->user_id) {
+                toastr()->error(
+                    'You are not authorized to delete this comment',
+                    'Unauthorized',
+                    [
+                        'positionClass' => 'toast-bottom-right',
+                        'progressBar' => false,
+                        'timeOut' => 2000,
+                        'closeButton' => true,
+                    ]
+                );
+                return redirect()->back();
+            }
+        }
+        try {
+            $comment = Comment::find($request->id);
+            $comment->visible = false;
+            $comment->reported = false;
+            $comment->save();
+            toastr()->success(
+                'Comment deleted successfully',
+                'Success',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect()->back();
+        } catch (\Exception $e) {
+            toastr()->error(
+                'Something went wrong',
+                'Error',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect('admin');
+        }
+    }
+    public function verify(Request $request)
+    {
+        if (!Auth::user()->privilege) {
+            return redirect()->route('home');
+        }
+        try {
+            request()->validate([
+                'id' => 'required',
+            ]);
+        } catch (\Exception $e) {
+            toastr()->error(
+                'Something went wrong',
+                'Error',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect('admin');
+        }
+        try {
+            $comment = Comment::find($request->id);
+            $comment->reported = false;
+            $comment->save();
+            toastr()->success(
+                'Comment verified successfully',
+                'Success',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+            return redirect('admin');
+        } catch (\Exception $e) {
+            toastr()->error(
+                'Something went wrong',
+                'Error',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+        }
+    }
+    public function report(Request $request)
+    {
+        try {
+            request()->validate([
+                'id' => 'required',
+            ]);
+        } catch (\Exception $e) {
+            toastr()->error(
+                'Something went wrong',
+                'Error',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+            );
+
+            return redirect()->back();
+        }
+        try {
+            $comment = Comment::find($request->id);
+            $comment->reported = true;
+            $comment->save();
+            toastr()->success(
+                'Comment reported successfully',
+                'Success',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+                ]
+
+            );
+            return redirect()->back();
+        } catch (\Exception $e) {
+            toastr()->error(
+                'Something went wrong',
+                'Error',
+                [
+                    'positionClass' => 'toast-bottom-right',
+                    'progressBar' => false,
+                    'timeOut' => 2000,
+                    'closeButton' => true,
+
+                ]
+            );
+            return redirect()->back();
+        }
+    }
+
 }

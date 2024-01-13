@@ -14,7 +14,7 @@ class Category extends Model
         'visible',
     ];
 
-    public function recipes()
+    public function recipe()
     {
         return $this->belongsTo(Recipe::class);
     }

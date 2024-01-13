@@ -12,14 +12,16 @@ class Comment extends Model
     protected $fillable = [
         'recipe_id',
         'user_id',
-        'comment'
+        'comment',
+        'reported',
+        'visible',
     ];
 
-    public function recipes()
+    public function recipe()
     {
-        return $this->belongsToMany(Recipe::class);
+        return $this->belongsTo(Recipe::class);
     }
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

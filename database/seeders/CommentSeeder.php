@@ -29,6 +29,7 @@ class CommentSeeder extends Seeder
                     'comment' => $faker->sentence,
                     'created_at' => now(),
                     'updated_at' => now(),
+                    'reported' => $faker->boolean(80), // 20% chance of true
                 ]);
             }
         }

@@ -46,7 +46,7 @@ class UserController extends Controller
             );
             return redirect('home');
         }
-        $user = User::where('email', 'LIKE', '%' . $email . '%')->select('id', 'name', 'email')->first()->toArray();
+        $user = User::where('email', 'LIKE', '%' . $email . '%')->select('id', 'name', 'email', 'suspended')->first()->toArray();
         if (!$user) {
             toastr()->error(
                 'User does not exist',

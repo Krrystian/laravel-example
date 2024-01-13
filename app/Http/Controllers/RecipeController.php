@@ -239,7 +239,7 @@ class RecipeController extends Controller
             return redirect()->route('home');
         }
         //pobieramy komentarze
-        $comments = Comment::where('recipe_id', $recipe['id'])
+        $comments = Comment::where('recipe_id', $recipe['id'])->where('visible', true)
             ->join('users', 'comments.user_id', '=', 'users.id')
             ->select('comments.*', 'users.name AS username')
             ->get()->toArray();

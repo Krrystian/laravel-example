@@ -62,17 +62,40 @@
                 </p>
                 <p class="hidden md:flex self-center justify-center">{{ substr($comment['updated_at'], 0, 10) }}
                 </p>
-                @if( Auth::id() == $comment['user_id'])
-                <div class="flex justify-center items-center">
-                    <button>
-                        <a href="{{ route('comment.edit', $comment['id']) }}" class="">
-                            <x-feathericon-edit />
-                        </a>
-                    </button>
+                <div class="flex-row flex justify-center items-center gap-4 flex-wrap">
+
+                    @if(Auth::id() == $comment['user_id'])
+                    <div class="flex justify-center items-center">
+                        <button>
+                            <a href="{{ route('comment.edit', $comment['id']) }}" class="">
+                                <x-feathericon-edit />
+                            </a>
+                        </button>
+                    </div>
+
+                    @endif
+                    @if(Auth::id() == $comment['user_id'] || Auth::user()->privilege == true)
+                    <form action="{{ route('comment.destroy') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="id" id="id" value="{{$comment['id']}}">
+                        <input type="hidden" name="user_id" id="user_id" value="{{$comment['user_id']}}">
+                        <button type="submit" class="flex justify-center items-center">
+                            <x-feathericon-trash-2 />
+                        </button>
+                    </form>
+
+                    @endif
+                    <form action="{{ route('comment.report')}}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="id" id="id" value="{{$comment['id']}}">
+                        <button type="submit"
+                            class="flex bg-oldrose p-2 rounded justify-center items-center hover:bg-vanilla duration-300 transition-all">
+                            Report
+                        </button>
+                    </form>
                 </div>
-                @else
-                <a></a>
-                @endif
 
             </div>
             @endforeach
