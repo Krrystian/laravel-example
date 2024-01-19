@@ -69,16 +69,16 @@
         <div
             class="w-full grid grid-cols-5 gap-y-2 py-4 px-8 lg:px-8 max-h-[614px] h-full overflow-hidden overflow-y-scroll">
             @foreach ($reports as $report)
-            <div class="col-span-3 flex flex-col ">
+            <div class="col-span-5 md:col-span-3 flex flex-col">
                 <p class="text-lg h-full flex items-center font-semibold">{{
                     $report['user']['email']
                     }}</p>
-                <p class="text-base border-b col-span-2 border-sage italic text-black/60 break-all">{{
+                <p class="text-base md:border-b col-span-2 border-sage italic text-black/60 break-all">{{
                     $report['comment'] }}</p>
             </div>
-
-            <div class="col-span-2 border-sage border-b flex justify-end gap-4 h-full items-center">
-                <div class="w-full flex flex-col gap-2 justify-center items-center">
+            <div
+                class="col-span-5 md:col-span-2 border-sage border-b pb-4 md:pb-2 flex justify-end gap-4 h-full items-center">
+                <div class="w-full flex md:flex-col gap-2 justify-center items-center">
                     <form action="{{route ('user.suspend')}}" method="POST" class="inline w-full"
                         onsubmit="return confirm('Are you sure you want to suspend user? PERMANENT');">
                         @csrf
