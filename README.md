@@ -19,13 +19,14 @@ Podane nizej wersje programów byly wykorzystane do tworzenia aplikacji, aplikac
 
 1. Plik projektowy `laravel-example` nalezy umieścić w `XAMPP\htdocs`.
 2. W folderze projektu, w terminalu `npm install` w celu instalacji zaleznosci `node_modules`.
-3. Włączyć XAMPP MySQL Database oraz Apache Web Server
-4. Migracja bazy danych: `php artisan migrate`
-5. Wczytywanie przykładowych danych: `php artisan db:seed`
-6. W celu utworzenia bazy danych wybrać opcję: `Would you like to create it? Yes`. Enter. Baza danych zostanie utworzona.
-7. Po uruchomieniu serwera, w terminalu `npm run dev`
-8. W nowym oknie terminala: `php artisan serve`
-9. Strona dostępna jest pod adresem: `localhost:8000`
+3. W folderze projektu, w terminalu `composer install` w celu instalacji zaleznosci `vendor`.
+4. Włączyć XAMPP MySQL Database oraz Apache Web Server
+5. Migracja bazy danych: `php artisan migrate`
+6. Wczytywanie przykładowych danych: `php artisan db:seed`
+7. W celu utworzenia bazy danych wybrać opcję: `Would you like to create it? Yes`. Enter. Baza danych zostanie utworzona.
+8. Po uruchomieniu serwera, w terminalu `npm run dev`
+9. W nowym oknie terminala: `php artisan serve`
+10. Strona dostępna jest pod adresem: `localhost:8000`
 
 ## Baza danych (przykładowe dane)
 

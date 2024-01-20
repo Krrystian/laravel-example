@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="w-full h-screen flex items-center justify-center pt-[50px]">
+<div class="w-full h-screen flex items-center justify-center pt-[10vh]">
     <div
-        class="w-full md:w-2/3 lg:w-2/3 xl:w-3/5 h-3/7 rounded-xl bg-oldrose m-4 md:m-0 p-8 md:shadow-2xl shadow-oldrose flex flex-col justify-center">
+        class="w-full md:w-2/3 py-8 lg:w-2/3 xl:w-3/5 rounded-xl bg-oldrose m-4 md:m-0 p-8 md:shadow-2xl shadow-oldrose flex flex-col justify-center overflow-y-scroll">
         <h2 class="w-full text-3xl font-bold tracking-wide text-center pb-4">{{__('Create Recipe')}}</h2>
         <form method="POST" enctype="multipart/form-data" action="{{ route('recipe.store') }}"
             class="flex flex-col md:grid md:grid-cols-2 gap-x-8">
@@ -73,9 +73,9 @@
                 <strong>{{ $errors->first() }}</strong>
             </p>
             @endif
-            <div class="col-span-2 mb-4 md:mb-0 flex w-full gap-4">
+            <div class="col-span-2 mb-4 flex w-full gap-4 pb-1">
                 <a href="{{ route('home')}}"
-                    class="bg-vanilla text-white text-center text-xl rounded-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Back')}}</a>
+                    class="bg-vanilla text-white rounded-xl text-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all text-center flex justify-center items-center">{{__('Back')}}</a>
                 <button type="submit"
                     class="bg-vanilla text-white rounded-xl text-xl px-4 py-2 w-full h-full hover:bg-beige duration-300 transition-all">{{__('Create')}}
                 </button>
