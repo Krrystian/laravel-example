@@ -46,7 +46,7 @@ class UserController extends Controller
             );
             return redirect('home');
         }
-        $user = User::where('email', 'LIKE', '%' . $email . '%')->select('id', 'name', 'email', 'suspended')->first()->toArray();
+        $user = User::where('email', 'LIKE', '%' . $email . '%')->select('id', 'name', 'email', 'suspended')->first();
         if (!$user) {
             toastr()->error(
                 'User does not exist',
@@ -58,8 +58,9 @@ class UserController extends Controller
                     'closeButton' => true,
                 ]
             );
-            return redirect('admin');
+            return null;
         }
+        $user = $user->toArray();
         return response()->json([$user]);
     }
     public function changeUsername(Request $request)

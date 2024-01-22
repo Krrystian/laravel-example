@@ -34,7 +34,6 @@ class AdminDashboardController extends Controller
         if ($reports instanceof \Illuminate\Http\JsonResponse) {
             $reports = $reports->getData(true);
         }
-        //dd($reports);
         return view('dashboard.index', compact('categorySanitized', 'users', 'reports'));
     }
     public function userSelect(Request $request)
@@ -49,6 +48,9 @@ class AdminDashboardController extends Controller
         }
         $categorySanitized = Session::get('categories');
         $users = UserController::fetchUser($email);
+        if (!$users) {
+            return redirect()->route('admin');
+        }
         if ($users instanceof \Illuminate\Http\JsonResponse) {
             $users = $users->getData(true);
         }
